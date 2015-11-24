@@ -12,39 +12,42 @@ func main() {
 	iterations := 100000
 	length := 16
 	for length <= 32768 {
-		vec := []bool{}
-		i := 0
 		start := time.Now()
-		for i < length {
-			this_bool := true
-			if ( rand.Float32() < 0.5 ) {
-				this_bool = false
-			}
-			vec = append( vec, this_bool )
-			i++
+		iter := 0
+		for iter < iterations {
+			vec :=  random_chromosome(length)
+			onemax( vec )
+			iter++
 		}
+		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		length = length*2
+
+	}
+
+	// Mutation
+	length = 16
+	for length <= 32768 {
+		vec := random_chromosome(length)
 		new_vec := vec
+		start := time.Now()
 		iter := 0
 		for iter < iterations {
 			new_vec = mutate(new_vec)
 			iter++
 		}
 		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		length = length*2
 
-		// Crossover
-		vec2 := []bool{}
-		i = 0
-		start = time.Now()
-		for i < length {
-			this_bool := true
-			if ( rand.Float32() < 0.5 ) {
-				this_bool = false
-			}
-			vec2 = append( vec2, this_bool )
-			i++
-		}
+	}
+
+	// Crossover
+	for length <= 32768 {
+		vec := random_chromosome(length)
+		new_vec := vec
+		vec2 := random_chromosome(length)
 		new_vec_2 := vec2
-		iter = 0
+		start := time.Now()
+		iter := 0
 		for iter < iterations {
 			new_vec, new_vec_2 = crossover(new_vec, new_vec_2)
 			iter++
@@ -52,6 +55,20 @@ func main() {
 		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 	} 
+}
+
+func random_chromosome( length int ) []bool {
+	chromosome := []bool{}
+	i:=0
+	for i < length {
+		this_bool := true
+		if ( rand.Float32() < 0.5 ) {
+			this_bool = false
+		}
+		chromosome = append( chromosome, this_bool )
+		i++
+	}
+	return chromosome
 }
 
 func mutate( array []bool ) []bool {
@@ -88,4 +105,14 @@ func crossover( mate1 []bool, mate2 []bool ) ([]bool,[]bool) {
 	result1 = append(result1,mate1[point_of_xover_2:]...)
 	result2 = append(result2,mate2[point_of_xover_2:]...)
 	return result1, result2
+}
+
+func onemax ( mate []bool ) int {
+	ones := 0
+	for _,element := range mate {
+		if ( element ) {
+			ones++
+		}
+	}
+	return ones
 }
