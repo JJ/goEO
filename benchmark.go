@@ -21,7 +21,7 @@ func main() {
 			onemax( vec )
 			iter++
 		}
-		fmt.Println("Go-Onemax,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 
 	}
@@ -54,7 +54,7 @@ func main() {
 			new_vec, new_vec_2 = crossover(new_vec, new_vec_2)
 			iter++
 		}
-		fmt.Println("Go-Xover,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 	}
 }
