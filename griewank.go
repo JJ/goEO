@@ -11,7 +11,7 @@ import (
 func main() {
 	rand.Seed( time.Now().UTC().UnixNano())
 	iterations := 1000000
-	dimensions := [7]int{2,4,6,8,10,20,100};
+	dimensions := [7]int{2,4,6,8,10,20,100}
 
 	// Onemax
 	for i,_ := range dimensions {
