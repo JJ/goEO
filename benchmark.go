@@ -1,7 +1,7 @@
-// hello.go
+// benchmark.go
 package main
 
-import ( 
+import (
 	"fmt"
 	"math/rand"
 	"time"
@@ -11,6 +11,8 @@ func main() {
 	rand.Seed( time.Now().UTC().UnixNano())
 	iterations := 100000
 	length := 16
+
+	// Onemax
 	for length <= 32768 {
 		start := time.Now()
 		iter := 0
@@ -19,7 +21,7 @@ func main() {
 			onemax( vec )
 			iter++
 		}
-		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-Onemax,",length,", ", time.Since(start).Seconds())
 		length = length*2
 
 	}
@@ -52,9 +54,9 @@ func main() {
 			new_vec, new_vec_2 = crossover(new_vec, new_vec_2)
 			iter++
 		}
-		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-Xover,",length,", ", time.Since(start).Seconds())
 		length = length*2
-	} 
+	}
 }
 
 func random_chromosome( length int ) []bool {
@@ -86,7 +88,7 @@ func mutate( array []bool ) []bool {
 	return result
 }
 
-		
+
 func crossover( mate1 []bool, mate2 []bool ) ([]bool,[]bool) {
 	point_of_xover_1  := rand.Intn(len(mate1))
 	point_of_xover_2  := rand.Intn(len(mate1))
@@ -94,14 +96,14 @@ func crossover( mate1 []bool, mate2 []bool ) ([]bool,[]bool) {
 		point_of_xover_1, point_of_xover_2 = point_of_xover_2, point_of_xover_1
 	}
 	result1 := []bool{}
-	result2 := []bool{}		
+	result2 := []bool{}
 	if ( point_of_xover_1 > 0 ) {
 		result1 = mate1[:point_of_xover_1]
 		result2 = mate2[:point_of_xover_1]
 	}
 	result1 = append(result1,mate2[point_of_xover_1:point_of_xover_2]...)
 	result2 = append(result2,mate1[point_of_xover_1:point_of_xover_2]...)
-	
+
 	result1 = append(result1,mate1[point_of_xover_2:]...)
 	result2 = append(result2,mate2[point_of_xover_2:]...)
 	return result1, result2
