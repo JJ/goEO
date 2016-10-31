@@ -13,6 +13,7 @@ func main() {
 	length := 16
 
 	// Onemax
+	fmt.Println(" OneMax " )
 	for length <= 32768 {
 		start := time.Now()
 		iter := 0
@@ -27,6 +28,7 @@ func main() {
 	}
 
 	// Mutation
+	fmt.Print(" Mutation \n" )
 	length = 16
 	for length <= 32768 {
 		vec := random_chromosome(length)
@@ -43,6 +45,8 @@ func main() {
 	}
 
 	// Crossover
+	fmt.Print(" Crossover \n" )
+	length = 16
 	for length <= 32768 {
 		vec := random_chromosome(length)
 		new_vec := vec
@@ -60,31 +64,23 @@ func main() {
 }
 
 func random_chromosome( length int ) []bool {
-	chromosome := []bool{}
-	i:=0
-	for i < length {
-		this_bool := true
+	chromosome := make([]bool,length)
+	for i:= 0; i  < length; i ++  {
 		if ( rand.Float32() < 0.5 ) {
-			this_bool = false
+			chromosome[i] = true
 		}
-		chromosome = append( chromosome, this_bool )
-		i++
 	}
 	return chromosome
 }
 
 func mutate( array []bool ) []bool {
 	point_of_mutation  := rand.Intn(len(array))
-	result := []bool{}
-	if ( point_of_mutation > 0 ) {
-		result = array[:point_of_mutation]
+	result := array
+	if array[point_of_mutation] {
+		result[point_of_mutation] = false
+	}else {
+		result[point_of_mutation] = true
 	}
-	if ( array[point_of_mutation] ) {
-		result = append(result,false)
-	} else {
-		result = append(result,true)
-	}
-	result = append(result,array[point_of_mutation+1:]...)
 	return result
 }
 
