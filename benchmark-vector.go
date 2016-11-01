@@ -19,9 +19,9 @@ func main() {
 		
 		for iter := 0; iter < iterations; iter++ {
 			vec :=  random_chromosome(length)
-			onemax2( vec )
+			onemax( vec )
 		}
-		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-Vector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 
 	}
@@ -38,7 +38,7 @@ func main() {
 			new_vec = mutate(new_vec)
 			iter++
 		}
-		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-Vector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 
 	}
@@ -57,41 +57,41 @@ func main() {
 			new_vec, new_vec_2 = crossover(new_vec, new_vec_2)
 			iter++
 		}
-		fmt.Println("Go-BitVector,",length,", ", time.Since(start).Seconds())
+		fmt.Println("Go-Vector,",length,", ", time.Since(start).Seconds())
 		length = length*2
 	}
 }
 
-func random_chromosome( length int ) []bool {
-	chromosome := make([]bool,length)
+func random_chromosome( length int ) []int {
+	chromosome := make([]int,length)
 	for i:= 0; i  < length; i ++  {
 		if ( rand.Float32() < 0.5 ) {
-			chromosome[i] = true
+			chromosome[i] = 1
 		}
 	}
 	return chromosome
 }
 
-func mutate( array []bool ) []bool {
+func mutate( array []int ) []int {
 	point_of_mutation  := rand.Intn(len(array))
 	result := array
-	if array[point_of_mutation] {
-		result[point_of_mutation] = false
+	if array[point_of_mutation] == 1{
+		result[point_of_mutation] = 0
 	}else {
-		result[point_of_mutation] = true
+		result[point_of_mutation] = 1
 	}
 	return result
 }
 
 
-func crossover( mate1 []bool, mate2 []bool ) ([]bool,[]bool) {
+func crossover( mate1 []int, mate2 []int ) ([]int,[]int) {
 	point_of_xover_1  := rand.Intn(len(mate1))
 	point_of_xover_2  := rand.Intn(len(mate1))
 	if ( point_of_xover_1 > point_of_xover_2) {
 		point_of_xover_1, point_of_xover_2 = point_of_xover_2, point_of_xover_1
 	}
-	result1 := []bool{}
-	result2 := []bool{}
+	result1 := []int{}
+	result2 := []int{}
 	if ( point_of_xover_1 > 0 ) {
 		result1 = mate1[:point_of_xover_1]
 		result2 = mate2[:point_of_xover_1]
@@ -104,24 +104,11 @@ func crossover( mate1 []bool, mate2 []bool ) ([]bool,[]bool) {
 	return result1, result2
 }
 
-func onemax ( mate []bool ) int {
+func onemax ( mate []int ) int {
 	ones := 0
 	for _,element := range mate {
-		if ( element ) {
-			ones++
-		}
+		ones += element
 	}
 	return ones
 }
 
-func onemax2 ( chromosome []bool ) int {
-	ones := 0
-	element := false
-	for len(chromosome)>0 {
-		element, chromosome = chromosome[0], chromosome[1:]
-		if ( element ) {
-			ones++
-		}
-	}
-	return ones
-}
